@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bounties · make.fun board</title>
+<meta name="description" content="A fast board for make.fun bounties: live pots, entry fees, deadlines, leaderboards and public profiles, read from make.fun's public API.">
+<link rel="icon" href="data:,">
+<style>body{margin:0;background:#faf8f3;color:#1c1917;font:16px/1.55 system-ui,sans-serif}.wrap{max-width:1240px;margin:0 auto;padding:0 20px}.site-header{border-bottom:1px solid #e4ddd2}.state{color:#6b6560;padding:32px 0}</style>
+<link rel="stylesheet" href="/style.css">
+<script type="module" src="/main.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#/">make.fun <span>board</span></a>
+    <nav aria-label="Main">
+      <a href="#/">Bounties</a>
+      <a href="https://make.fun/">make.fun</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap layout" id="layout" data-mode="board">
+  <section class="pane pane-list" id="pane-list" aria-label="Bounty board">
+    <p class="state" role="status">Loading live bounties from make.fun…</p>
+  </section>
+  <section class="pane pane-detail" id="pane-detail" aria-label="Detail" tabindex="-1">
+    <p class="state" role="status">Loading…</p>
+  </section>
+</main>
+<noscript><p class="wrap">This board needs JavaScript: it reads make.fun’s public API in your browser.</p></noscript>
+<footer class="wrap site-footer">
+  <p>Live data from <a href="https://make.fun/api/openapi.json">make.fun’s public API</a>. This board only reads: entering a bounty and voting happen on <a href="https://make.fun/">make.fun</a>.</p>
+</footer>
+</body>
+</html>

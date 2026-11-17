@@ -1,0 +1,749 @@
+/* Ledger design: warm paper, ink text, one green accent kept for money and
+   live figures, amber kept for deadlines inside 24 hours. Figures use
+   tabular numerals so columns of pots, fees and times scan straight. The
+   board list stays beside the detail on wide screens, and each pane keeps
+   its own scroll, so the way back to any bounty is always in reach. */
+
+:root {
+  --paper: #faf8f3;
+  --card: #fffdf9;
+  --ink: #1c1917;
+  --muted: #6b6560;
+  --line: #e4ddd2;
+  --green: #166534;
+  --green-bg: #e9f4ec;
+  --amber: #92400e;
+  --radius: 8px;
+  --header-h: 57px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--paper);
+}
+
+body {
+  margin: 0;
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--ink);
+}
+
+.wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+a {
+  color: var(--green);
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+a[href],
+button,
+select {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+h1 {
+  font-size: 1.6rem;
+  line-height: 1.2;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: 1.05rem;
+  line-height: 1.3;
+  margin: 0;
+}
+
+section {
+  margin-top: 28px;
+}
+
+section > h2 {
+  font-size: 1.25rem;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 12px;
+}
+
+.section-note {
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Header: slim, sticky, so the way back to the board is always at hand. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  gap: 16px;
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.brand span {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.brand:hover {
+  text-decoration: underline;
+}
+
+nav {
+  display: flex;
+  gap: 4px;
+}
+
+nav a {
+  color: var(--ink);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+nav a:hover {
+  background: var(--green-bg);
+  text-decoration: none;
+}
+
+nav a[aria-current="page"] {
+  font-weight: 700;
+  box-shadow: inset 0 -2px 0 var(--green);
+  border-radius: 0;
+}
+
+/* Split layout: board list left, detail right. */
+.layout {
+  display: grid;
+  grid-template-columns: 400px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+  padding-top: 24px;
+  padding-bottom: 48px;
+}
+
+.pane-list {
+  position: sticky;
+  top: var(--header-h);
+  max-height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  padding-bottom: 24px;
+  scrollbar-gutter: stable;
+}
+
+.pane-detail {
+  min-width: 0;
+}
+
+.pane-detail:focus {
+  outline: none;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding-top: 16px;
+  padding-bottom: 32px;
+}
+
+.state {
+  color: var(--muted);
+  padding: 32px 0;
+}
+
+.state-block {
+  padding: 32px 0;
+}
+
+.state-block h1 {
+  margin-bottom: 8px;
+}
+
+.state-block p {
+  color: var(--muted);
+  max-width: 560px;
+}
+
+.page-head {
+  margin-bottom: 16px;
+}
+
+.page-head p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.lede {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 720px;
+}
+
+.crumb {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+/* Buttons: one solid style for the main action, one quiet style for the rest. */
+.btn,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.btn {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn:hover {
+  background: #000;
+  text-decoration: none;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.btn-ghost:hover {
+  background: var(--card);
+  border-color: var(--muted);
+  text-decoration: none;
+}
+
+.btn-ghost:active {
+  transform: translateY(1px);
+}
+
+.btn-ghost.is-active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 0;
+}
+
+/* Board list pane: title, Live/Ended tabs, sort, compact rows. */
+.pane-title {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.pane-sub {
+  margin: 2px 0 14px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.tab {
+  font: inherit;
+  font-weight: 600;
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+}
+
+.tab:hover {
+  background: var(--card);
+}
+
+.tab[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.sort-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.sort-row select {
+  font: inherit;
+  color: var(--ink);
+  min-height: 40px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.mini-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+}
+
+.mini-row {
+  border-bottom: 1px solid var(--line);
+}
+
+.mini-link {
+  display: block;
+  padding: 12px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.mini-link:hover {
+  background: var(--card);
+  text-decoration: none;
+}
+
+.mini-row.is-selected .mini-link {
+  background: var(--green-bg);
+  box-shadow: inset 0 0 0 1px var(--green);
+}
+
+.mini-title {
+  display: block;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.mini-meta {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.mini-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  margin-top: 6px;
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.mini-figures .soon {
+  color: var(--amber);
+  font-weight: 700;
+}
+
+/* Facts strip: the numbers a bounty page is opened for, in one scan. */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 20px 0 0;
+}
+
+.facts div {
+  background: var(--card);
+  padding: 10px 14px;
+}
+
+.facts dt {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.facts dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Six facts sit in three columns, so no strip ends with empty cells. */
+.facts-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Tables: rewards and standings share one plain grid, figures right. */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.rewards th,
+.rewards td,
+.standings th,
+.standings td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.rewards td,
+.standings .figure-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.rewards thead th,
+.standings thead th {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 600;
+  border-bottom: 2px solid var(--ink);
+}
+
+.rewards thead th:not(:first-child),
+.standings thead th:not(:first-child):not(:nth-child(2)) {
+  text-align: right;
+}
+
+.rewards tbody th {
+  font-weight: 600;
+}
+
+.rewards .row-first td,
+.rewards .row-first th {
+  font-weight: 700;
+  background: var(--green-bg);
+}
+
+.standings .rank {
+  font-weight: 800;
+  width: 52px;
+}
+
+.standings tbody tr:hover {
+  background: var(--card);
+}
+
+.entry-cell {
+  min-width: 200px;
+}
+
+.entry-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.entry-link:hover {
+  color: var(--green);
+  text-decoration: underline;
+}
+
+.entry-title {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-top: 2px;
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.handle {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.88em;
+}
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+  background: var(--line);
+}
+
+.avatar-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--green-bg);
+  color: var(--green);
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex: none;
+}
+
+.interval {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.88em;
+  white-space: nowrap;
+}
+
+.view-switch {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.view-switch .btn-ghost {
+  min-height: 40px;
+  padding: 8px 14px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.prose {
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  max-width: 760px;
+}
+
+.rules-text {
+  font-size: 0.95rem;
+}
+
+/* Profile entries reuse the board row shape: one line per entry. */
+.board {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px 90px 130px;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.row h2 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.row h2 a:hover {
+  color: var(--green);
+  text-decoration: underline;
+}
+
+.row-meta {
+  margin: 4px 0 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.row-figure {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.figure {
+  display: block;
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.figure-label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Profile header: avatar, name and links, then the same facts strip. */
+.profile-head {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.profile-head .avatar,
+.profile-head .avatar-fallback {
+  width: 64px;
+  height: 64px;
+  font-size: 1.5rem;
+}
+
+.profile-head h1 {
+  margin-bottom: 2px;
+}
+
+.handle-line {
+  margin: 0;
+  color: var(--muted);
+}
+
+.profile-links {
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+}
+
+/* Narrow screens: one pane at a time, board or detail, switched by route. */
+@media (max-width: 1023px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pane-list {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .layout[data-mode="board"] .pane-detail {
+    display: none;
+  }
+
+  .layout[data-mode="detail"] .pane-list {
+    display: none;
+  }
+
+  .facts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1199px) {
+  .standings .optional {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    font-size: 15px;
+  }
+
+  h1 {
+    font-size: 1.45rem;
+  }
+
+  .header-inner {
+    min-height: 52px;
+  }
+
+  nav a {
+    padding: 8px 8px;
+  }
+
+  .row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+      "main main main"
+      "result prize entered";
+    row-gap: 8px;
+  }
+
+  .row-main {
+    grid-area: main;
+  }
+
+  .row-figure {
+    text-align: left;
+  }
+
+  .row-figure:nth-of-type(1) {
+    grid-area: result;
+  }
+
+  .row-figure:nth-of-type(2) {
+    grid-area: prize;
+  }
+
+  .row-figure:nth-of-type(3) {
+    grid-area: entered;
+  }
+
+  .entry-title {
+    max-width: 240px;
+  }
+
+  .profile-head {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
